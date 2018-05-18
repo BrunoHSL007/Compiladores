@@ -1,40 +1,8 @@
-/*
- * Compiladores.cpp
- * 
- * Copyright 2018 BrunoHSL <brunohsl007@brunohsl007-desktop>
- * 
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301, USA.
- * 
- * 
- */
-
+//Licença
 #include <iostream>
 #include <cstdio>
 #include <string>
-#include <regex.h>
 using namespace std;
-
-//const char* RegexID = "[a-zA-Z][a-zA-Z0-9_]*";
-//const char* RegexInteiro = "[0-9]+";
-//const char* RegexFlutuante = "[0-9]+,[0-9]+";
-
-//string LetrasPermitidas = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-//string NmrsPermitidos = "0123456789";
-
-
 
 int main(int argc, char **argv)
 {
@@ -54,8 +22,7 @@ int main(int argc, char **argv)
 		// Lê caracter por caracter do arquivo
 		char lido = getc(input);
 		
-		cout << " valor lido["<< contador <<"] = " << lido<< endl;
-		
+		cout << " valor lido["<< contador <<"] = " << lido<<endl;
 		//Operadores Lógicos
 		if(lido=='&')
 		{
@@ -169,6 +136,79 @@ int main(int argc, char **argv)
 			}
 		}
 		//Identificadores
+		else if(isalpha(lido)){
+			fseek(input, -1, 1); //Volta um caractere
+			//int tamanhoPalavra=0;
+			string palavra;
+			lido = getc(input);
+			while((isalpha(lido))||(isdigit(lido))){
+				//tamanhoPalavra++;
+				palavra+=lido;
+				lido = getc(input);
+			}
+			fseek(input, -1, 1); //Volta um caractere
+			//char palavra[tamanhoPalavra];
+			//for(int i=0;i<tamanhoPalavra;i++){
+			//	palavra[i] = getc(input);
+			//}
+			//for(int i=)
+			cout << "ID " << palavra << endl;
+		}
+		else if(isdigit(lido)){
+			fseek(input, -1, 1); //Volta um caractere
+			//int tamanhoDigito=0;
+			string digito;
+			lido = getc(input);
+			while((isdigit(lido))){
+				//tamanhoDigito++;
+				digito+=lido;
+				lido = getc(input);
+			}
+			if(lido=='.'){
+				digito+=lido;
+				lido = getc(input);
+				while((isdigit(lido))){
+					//tamanhoDigito++;
+					digito+=lido;
+					lido = getc(input);
+				}
+				cout <<"Ponto Flutuante " << digito << endl;
+			}
+			else{
+				cout <<"Inteiro " << digito << endl;
+			}
+		}
+		else if(lido =='\"'){
+			lido = getc(input);
+			string literal;
+			while((lido!='\"')){
+				//tamanhoDigito++;
+				literal+=lido;
+				lido = getc(input);
+				if(lido==EOF){
+					cout << "Não encontrado \" do fechamento" << endl; //Ver se tá certo com o Professor
+					return 1;
+				}
+			}
+			cout << "Literal " << literal << endl;
+		}
+		else if(lido =='\''){
+			lido = getc(input);
+			string literal;
+			while((lido!='\'')){
+				//tamanhoDigito++;
+				literal+=lido;
+				lido = getc(input);
+				if(lido==EOF){
+					cout << "Não encontrado \' do fechamento" << endl; //Ver se tá certo com o Professor
+					return 1;
+				}
+			}
+			cout << "Literal " << literal << endl;
+		}
+		//else if(isdigit(lido)){
+		//	cout << "DIGITO" << endl;
+		//}
 		//else{
 		//	string a;
 		//	do{
@@ -178,6 +218,8 @@ int main(int argc, char **argv)
 		//	while(LetrasPermitidas.substr(a,1));
 		//}
 		
+		//Perguntar sobre o número negativo se é feito nessa etapa ou mais pra frente
+		//Perguntar se é pra salvar em uma lista e como fazer isso
 		
 		contador++;
 	}
