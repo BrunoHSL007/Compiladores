@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cstdio>
 #include <string>
+#include <list>
+#include <iterator>
 using namespace std;
 
 int main(int argc, char **argv)
@@ -10,6 +12,7 @@ int main(int argc, char **argv)
 	FILE *input =fopen(argv[1], "r");
 	int ContLinha=1; //contador da linha onde está o erro
 	//for(int i=0;i<tam;i++){
+	list <string> lista;
 	
 	if (input == NULL)  // Se houve erro na abertura
 	{
@@ -22,13 +25,13 @@ int main(int argc, char **argv)
 		// Lê caracter por caracter do arquivo
 		char lido = getc(input);
 		
-		cout << " valor lido["<< contador <<"] = " << lido<<endl;
+		//cout << " valor lido["<< contador <<"] = " << lido<<endl;
 		//Operadores Lógicos
 		if(lido=='&')
 		{
 			lido = getc(input);
 			if(lido=='&'){
-				cout << "AND" << endl;
+				lista.push_back("AND");
 			}
 			else{
 				cout << "Erro na Linha " << ContLinha << " = &" << lido;
@@ -40,7 +43,7 @@ int main(int argc, char **argv)
 		{
 			lido = getc(input);
 			if(lido=='|'){
-				cout << "OR" << endl;
+				lista.push_back("OR");
 			}
 			else{
 				cout << "Erro na Linha " << ContLinha << " = &" << lido;
@@ -51,10 +54,10 @@ int main(int argc, char **argv)
 		{
 			lido = getc(input);
 			if(lido=='='){
-				cout << "IGUALDADE" << endl;
+				lista.push_back("IGUALDADE");
 			}
 			else{
-				cout << "ATRIBUICAO" << endl;
+				lista.push_back("ATRIBUICAO");
 				fseek(input, -1, 1); //Volta um caractere
 			}
 		}
@@ -62,10 +65,10 @@ int main(int argc, char **argv)
 		{
 			lido = getc(input);
 			if(lido=='='){
-				cout << "DIFERENTE" << endl;
+				lista.push_back("DIFERENTE");
 			}
 			else{
-				cout << "NOT" << endl;
+				lista.push_back("NOT");
 				fseek(input, -1, 1); //Volta um caractere
 			}
 		}
@@ -73,10 +76,10 @@ int main(int argc, char **argv)
 		{
 			lido = getc(input);
 			if(lido=='='){
-				cout << "MENORIGUAL" << endl;
+				lista.push_back("MENORIGUAL");
 			}
 			else{
-				cout << "MENOR" << endl;
+				lista.push_back("MENOR");
 				fseek(input, -1, 1); //Volta um caractere
 			}
 		}
@@ -84,46 +87,46 @@ int main(int argc, char **argv)
 		{
 			lido = getc(input);
 			if(lido=='='){
-				cout << "MAIORIGUAL" << endl;
+				lista.push_back("MAIORIGUAL");
 			}
 			else{
-				cout << "MAIOR" << endl;
+				lista.push_back("MAIOR");
 				fseek(input, -1, 1); //Volta um caractere
 			}
 		}
 		//Controle
 		else if(lido=='(')
 		{
-			cout << "ABREPAR" << endl;
+			lista.push_back("ABREPAR");
 		}
 		else if(lido==')')
 		{
-			cout << "FECHAPAR" << endl;
+			lista.push_back("FECHAPAR");
 		}
 		else if(lido=='{')
 		{
-			cout << "ABRECHAVE" << endl;
+			lista.push_back("ABRECHAVE");
 		}
 		else if(lido=='}')
 		{
-			cout << "FECHACHAVE" << endl;
+			lista.push_back("FECHACHAVE");
 		}
 		else if(lido==';')
 		{
-			cout << "FIMCOMANDO" << endl;
+			lista.push_back("FIMCOMANDO");
 		}
 		//Operadores Aritméticos
 		else if(lido=='+')
 		{
-			cout << "SOMA" << endl;
+			lista.push_back("SOMA");
 		}
 		else if(lido=='-')
 		{
-			cout << "SUBTRACAO" << endl;
+			lista.push_back("SUBTRACAO");
 		}
 		else if(lido=='*')
 		{
-			cout << "MULTIPLICACAO" << endl;
+			lista.push_back("MULTIPLICACAO");
 		}
 		else if(lido=='/')
 		{
@@ -132,7 +135,7 @@ int main(int argc, char **argv)
 				while(getc(input)!='\n');
 			}
 			else{
-				cout << "DIVISAO" << endl;
+				lista.push_back("DIVISAO");
 			}
 		}
 		//Identificadores
@@ -152,7 +155,8 @@ int main(int argc, char **argv)
 			//	palavra[i] = getc(input);
 			//}
 			//for(int i=)
-			cout << "ID " << palavra << endl;
+			string aux1 = "ID "+palavra;
+			lista.push_back(aux1);
 		}
 		else if(isdigit(lido)){
 			fseek(input, -1, 1); //Volta um caractere
@@ -172,10 +176,13 @@ int main(int argc, char **argv)
 					digito+=lido;
 					lido = getc(input);
 				}
-				cout <<"Ponto Flutuante " << digito << endl;
+				
+				string aux1 = "Ponto Flutuante "+digito;
+				lista.push_back(aux1);
 			}
 			else{
-				cout <<"Inteiro " << digito << endl;
+				string aux1 = "Inteiro "+digito;
+				lista.push_back(aux1);
 			}
 		}
 		else if(lido =='\"'){
@@ -190,7 +197,9 @@ int main(int argc, char **argv)
 					return 1;
 				}
 			}
-			cout << "Literal " << literal << endl;
+			string aux1 = "Literal "+literal;
+			lista.push_back(aux1);
+			
 		}
 		else if(lido =='\''){
 			lido = getc(input);
@@ -204,8 +213,10 @@ int main(int argc, char **argv)
 					return 1;
 				}
 			}
-			cout << "Literal " << literal << endl;
+			string aux1 = "Literal "+literal;
+			lista.push_back(aux1);
 		}
+		
 		//else if(isdigit(lido)){
 		//	cout << "DIGITO" << endl;
 		//}
@@ -223,6 +234,9 @@ int main(int argc, char **argv)
 		
 		contador++;
 	}
+	list <string> :: iterator it;
+	for(it = lista.begin(); it != lista.end(); ++it)
+			cout << *it << '\n' ;
 	fclose(input);
 	return 0;
 }
