@@ -5,7 +5,7 @@
 #include <list>
 #include <iterator>
 using namespace std;
-
+string reservadas[17]={"void", "int", "char", "bool", "float", "se", "senao", "escolha", "caso", "quebra", "padrao", "para", "enquanto", "comeca", "termina", "leia", "escreva"};
 int main(int argc, char **argv)
 {
 	//int tam=strlen(argv[1]);
@@ -19,22 +19,22 @@ int main(int argc, char **argv)
 		printf("Problemas na abertura do arquivo\n");
 		return 1;
 	}
-	int contador=0;
 	while (!feof(input))
 	{
 		// Lê caracter por caracter do arquivo
 		char lido = getc(input);
-		
 		//cout << " valor lido["<< contador <<"] = " << lido<<endl;
-		//Operadores Lógicos
-		if(lido=='&')
+		if(lido=='\n'){
+			ContLinha++;
+		}
+		else if(lido=='&')//Operadores Lógicos
 		{
 			lido = getc(input);
 			if(lido=='&'){
 				lista.push_back("AND");
 			}
 			else{
-				cout << "Erro na Linha " << ContLinha << " = &" << lido;
+				cout << "Erro na Linha " << ContLinha << " => Caractere '&' esperado '&&'"<<endl<<endl;
 				fseek(input, -1, 1); //Volta um caractere
 				
 			}
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 				lista.push_back("OR");
 			}
 			else{
-				cout << "Erro na Linha " << ContLinha << " = &" << lido;
+				cout << "Erro na Linha " << ContLinha << " => Caractere '|' esperado '||'"<<endl<<endl;
 				fseek(input, -1, 1); //Volta um caractere
 			}
 		}
@@ -150,12 +150,26 @@ int main(int argc, char **argv)
 				lido = getc(input);
 			}
 			fseek(input, -1, 1); //Volta um caractere
-			//char palavra[tamanhoPalavra];
-			//for(int i=0;i<tamanhoPalavra;i++){
-			//	palavra[i] = getc(input);
-			//}
-			//for(int i=)
-			string aux1 = "ID "+palavra;
+			bool isReservada=false;
+			for(int i=0; i<17;i++){
+				if(!palavra.compare(reservadas[i])){
+					//cout << "reservada " << palavra<<endl;
+					isReservada=true;
+					break;
+				}
+			}
+			string aux1;
+			if(isReservada){
+				for(int i=0; i<palavra.size(); i++)
+				{                            // Converte cada caracter de Str
+				 palavra[i] = toupper (palavra[i]);  // para maiusculas
+				}
+				aux1 = palavra;
+			}
+			else{
+				aux1 = "ID "+palavra;
+				
+			}
 			lista.push_back(aux1);
 		}
 		else if(isdigit(lido)){
@@ -177,11 +191,11 @@ int main(int argc, char **argv)
 					lido = getc(input);
 				}
 				
-				string aux1 = "Ponto Flutuante "+digito;
+				string aux1 = "PONTO FLUTUANTE "+digito;
 				lista.push_back(aux1);
 			}
 			else{
-				string aux1 = "Inteiro "+digito;
+				string aux1 = "INTEIRO "+digito;
 				lista.push_back(aux1);
 			}
 		}
@@ -197,7 +211,7 @@ int main(int argc, char **argv)
 					return 1;
 				}
 			}
-			string aux1 = "Literal "+literal;
+			string aux1 = "LITERAL \'"+literal+"\'";
 			lista.push_back(aux1);
 			
 		}
@@ -213,8 +227,11 @@ int main(int argc, char **argv)
 					return 1;
 				}
 			}
-			string aux1 = "Literal "+literal;
+			string aux1 = "LITERAL \'"+literal+"\'";
 			lista.push_back(aux1);
+		}
+		else if(lido!=' ' && lido!=',' && lido!=EOF && lido!='\t'){
+			cout << "Erro na Linha " << ContLinha << " => Caractere '"<<lido<<"' nao esperado"<<endl<<endl;
 		}
 		
 		//else if(isdigit(lido)){
@@ -231,10 +248,9 @@ int main(int argc, char **argv)
 		
 		//Perguntar sobre o número negativo se é feito nessa etapa ou mais pra frente
 		//Perguntar se é pra salvar em uma lista e como fazer isso
-		
-		contador++;
 	}
 	list <string> :: iterator it;
+	cout << "\tLISTA DE TOKENS\n";
 	for(it = lista.begin(); it != lista.end(); ++it)
 			cout << *it << '\n' ;
 	fclose(input);
