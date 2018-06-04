@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 	int ContLinha=1; //contador da linha onde está o erro
 	//for(int i=0;i<tam;i++){
 	list <string> lista;
-	
+
 	if (input == NULL)  // Se houve erro na abertura
 	{
 		printf("Problemas na abertura do arquivo\n");
@@ -31,19 +31,19 @@ int main(int argc, char **argv)
 		{
 			lido = getc(input);
 			if(lido=='&'){
-				lista.push_back("AND");
+				lista.push_back("OPREL AND");
 			}
 			else{
 				cout << "Erro na Linha " << ContLinha << " => Caractere '&' esperado '&&'"<<endl<<endl;
 				fseek(input, -1, 1); //Volta um caractere
-				
+
 			}
 		}
 		else if(lido=='|')
 		{
 			lido = getc(input);
 			if(lido=='|'){
-				lista.push_back("OR");
+				lista.push_back("OPREL OR");
 			}
 			else{
 				cout << "Erro na Linha " << ContLinha << " => Caractere '|' esperado '||'"<<endl<<endl;
@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 		{
 			lido = getc(input);
 			if(lido=='='){
-				lista.push_back("IGUALDADE");
+				lista.push_back("OPREL IGUALDADE");
 			}
 			else{
 				lista.push_back("ATRIBUICAO");
@@ -65,10 +65,10 @@ int main(int argc, char **argv)
 		{
 			lido = getc(input);
 			if(lido=='='){
-				lista.push_back("DIFERENTE");
+				lista.push_back("OPREL DIFERENTE");
 			}
 			else{
-				lista.push_back("NOT");
+				lista.push_back("OPLOG NOT");
 				fseek(input, -1, 1); //Volta um caractere
 			}
 		}
@@ -76,10 +76,10 @@ int main(int argc, char **argv)
 		{
 			lido = getc(input);
 			if(lido=='='){
-				lista.push_back("MENORIGUAL");
+				lista.push_back("OPREL MENORIGUAL");
 			}
 			else{
-				lista.push_back("MENOR");
+				lista.push_back("OPREL MENOR");
 				fseek(input, -1, 1); //Volta um caractere
 			}
 		}
@@ -87,10 +87,10 @@ int main(int argc, char **argv)
 		{
 			lido = getc(input);
 			if(lido=='='){
-				lista.push_back("MAIORIGUAL");
+				lista.push_back("OPREL MAIORIGUAL");
 			}
 			else{
-				lista.push_back("MAIOR");
+				lista.push_back("OPREL MAIOR");
 				fseek(input, -1, 1); //Volta um caractere
 			}
 		}
@@ -118,15 +118,15 @@ int main(int argc, char **argv)
 		//Operadores Aritméticos
 		else if(lido=='+')
 		{
-			lista.push_back("SOMA");
+			lista.push_back("OPARIT SOMA");
 		}
 		else if(lido=='-')
 		{
-			lista.push_back("SUBTRACAO");
+			lista.push_back("OPARIT SUBTRACAO");
 		}
 		else if(lido=='*')
 		{
-			lista.push_back("MULTIPLICACAO");
+			lista.push_back("OPARIT MULTIPLICACAO");
 		}
 		else if(lido=='/')
 		{
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 				while(getc(input)!='\n');
 			}
 			else{
-				lista.push_back("DIVISAO");
+				lista.push_back("OPARIT DIVISAO");
 			}
 		}
 		//Identificadores
@@ -168,7 +168,7 @@ int main(int argc, char **argv)
 			}
 			else{
 				aux1 = "ID "+palavra;
-				
+
 			}
 			lista.push_back(aux1);
 		}
@@ -190,7 +190,7 @@ int main(int argc, char **argv)
 					digito+=lido;
 					lido = getc(input);
 				}
-				
+
 				string aux1 = "PONTO FLUTUANTE "+digito;
 				lista.push_back(aux1);
 			}
@@ -207,13 +207,13 @@ int main(int argc, char **argv)
 				literal+=lido;
 				lido = getc(input);
 				if(lido==EOF){
-					cout << "Não encontrado \" do fechamento" << endl; //Ver se tá certo com o Professor
+					cout << "Nao encontrado \" do fechamento" << endl; //Ver se tá certo com o Professor
 					return 1;
 				}
 			}
 			string aux1 = "LITERAL \'"+literal+"\'";
 			lista.push_back(aux1);
-			
+
 		}
 		else if(lido =='\''){
 			lido = getc(input);
@@ -223,7 +223,7 @@ int main(int argc, char **argv)
 				literal+=lido;
 				lido = getc(input);
 				if(lido==EOF){
-					cout << "Não encontrado \' do fechamento" << endl; //Ver se tá certo com o Professor
+					cout << "Nao encontrado \' do fechamento" << endl; //Ver se tá certo com o Professor
 					return 1;
 				}
 			}
@@ -233,7 +233,7 @@ int main(int argc, char **argv)
 		else if(lido!=' ' && lido!=',' && lido!=EOF && lido!='\t'){
 			cout << "Erro na Linha " << ContLinha << " => Caractere '"<<lido<<"' nao esperado"<<endl<<endl;
 		}
-		
+
 		//else if(isdigit(lido)){
 		//	cout << "DIGITO" << endl;
 		//}
@@ -245,7 +245,7 @@ int main(int argc, char **argv)
 		//	}
 		//	while(LetrasPermitidas.substr(a,1));
 		//}
-		
+
 		//Perguntar sobre o número negativo se é feito nessa etapa ou mais pra frente
 		//Perguntar se é pra salvar em uma lista e como fazer isso
 	}
